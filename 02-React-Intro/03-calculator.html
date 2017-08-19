@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Calculator</title>
+	<script src="react.js"></script>
+	<script src="react-dom.js"></script>
+	<script src="babel.min.js"></script>
+	<style>
+		.result{
+			font-size:22pt;
+		}
+	</style>
+
+	<script type="text/babel">
+		class EventEmitter{
+			constructor(){
+				this._callbacks = [];
+			}
+			subscribe(callback){
+				this._callbacks.push(callback);
+			}
+			triggerChange(){
+				this._callbacks.forEach(callback => callback());
+			}
+		}
+
+		class CalculatorModel extends EventEmitter {
+			constructor(){
+				super();
+				this.number1 = 0;
+				this.number2 = 0;
+				this.result = 0;
+			}
+			add(){
+				this.result = this.number1 + this.number2;
+				this.triggerChange();
+			}
+			subtract(){
+				this.result = this.number1 - this.number2;
+				this.triggerChange();
+			}
+			multiply(){
+				this.result = this.number1 * this.number2;
+				this.triggerChange();
+			}
+			divide(){
+				this.result = this.number1 / this.number2;
+				this.triggerChange();
+			}
+		}
+		class Calculator extends React.Component{
+			
+			onValue1Change(value){
+				this.props.model.number1 = value;
+			}
+			onValue2Change(value){
+				this.props.model.number2 = value;
+			}
+			/*
+			onBtnAddClick(){
+				this.props.model.add();
+			}
+			onBtnSubtractClick(){
+				this.props.model.subtract();
+			}*/
+			
+			render(){
+				return(
+					<div>
+						<NumberInput display="Number 1 :" onValueChange={this.onValue1Change.bind(this)}></NumberInput>
+						<NumberInput display="Number 2 :" onValueChange={this.onValue2Change.bind(this)}></NumberInput>
+						<br />
+						<input type="button" value="Add" onClick={() => this.props.model.add()}/>
+						<input type="button" value="Subtract" onClick={() => this.props.model.subtract()}/>
+						<input type="button" value="Multiply" onClick={() => this.props.model.multiply()}/>
+						<input type="button" value="Divide" onClick={() => this.props.model.divide()}/>
+						<CalculatorResult data={this.props.model.result}></CalculatorResult>
+					</div>
+				)
+			}
+		}
+
+		class NumberInput extends React.Component{
+			onTxtNumberChange(evt){
+				let value = parseInt(evt.target.value);
+				this.props.onValueChange(value);
+			}
+			render(){
+				return (
+					<div>
+						<label htmlFor="">{this.props.display}</label>	
+						<input type="number" onChange={this.onTxtNumberChange.bind(this)}/>
+					</div>
+				)
+			}
+		}
+
+		class CalculatorResult extends React.Component{
+			render(){
+				let resultStyle = {
+					color : this.props.data >= 0 ? 'green' : 'red'
+				};
+				return(
+					<div className="result" style={resultStyle}>{this.props.data}</div>
+				)
+			}
+		}
+
+		window.model = new CalculatorModel();
+		function renderApp(){
+			ReactDOM.render(<Calculator model={model}></Calculator>, 
+				document.getElementById('content'));
+		}
+		model.subscribe(renderApp);
+		renderApp();
+	</script>
+</head>
+<body>
+	<div id="content"></div>
+</body>
+</html>

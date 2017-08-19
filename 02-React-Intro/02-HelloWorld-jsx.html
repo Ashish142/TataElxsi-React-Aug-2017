@@ -25,17 +25,14 @@
 					<div>
 						<label>Name :</label>
 						<input type="text" ref="txtUserName"/>
-						<input type="button" value="Greet" id="btnGreet" onClick={this.onBtnGreetClick.bind(this)}/>
+						<input type="button" value="Greet" id="btnGreet" 
+							onClick={this.onBtnGreetClick.bind(this)}/>
 						<h1>{this.state.msg}</h1>
 					</div>
 				);
 				
 			}
 		}
-
-		
-		
-
 		ReactDOM.render(<HelloWorld></HelloWorld>, 
 				document.getElementById('content'));
 	</script>
