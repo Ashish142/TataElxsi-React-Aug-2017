@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Hello World - React</title>
+	<script src="react.js"></script>
+	<script src="react-dom.js"></script>
+	<script src="babel.min.js"></script>
+	<script type="text/babel">
+		class HelloWorld extends React.Component{
+			constructor(){
+				super();
+				this.state = {
+					msg : '[Default greet message]'
+				};
+			}
+			onBtnGreetClick(){
+				let username = this.refs.txtUserName.value;
+				let greetMsg = `Hello ${username}, Welcome to React!`;
+				this.setState({msg : greetMsg})
+				console.log('state updated');
+			}
+			render(){
+				return (
+					<div>
+						<label>Name :</label>
+						<input type="text" ref="txtUserName"/>
+						<input type="button" value="Greet" id="btnGreet" onClick={this.onBtnGreetClick.bind(this)}/>
+						<h1>{this.state.msg}</h1>
+					</div>
+				);
+				
+			}
+		}
+
+		
+		
+
+		ReactDOM.render(<HelloWorld></HelloWorld>, 
+				document.getElementById('content'));
+	</script>
+</head>
+<body>
+	
+	<div id="content">
+		
+	</div>
+</body>
+</html>
