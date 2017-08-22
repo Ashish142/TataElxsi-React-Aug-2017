@@ -7,21 +7,9 @@
       "createdAt": "2017-07-28T06:04:49.597Z"
     },
     {
-      "id": 7,
-      "name": "Server communication failure",
-      "isClosed": true,
-      "createdAt": "2017-07-28T06:22:53.433Z"
-    },
-    {
-      "id": 8,
-      "name": "Test Bug",
-      "isClosed": false,
-      "createdAt": "2017-08-09T15:40:04.381Z"
-    },
-    {
       "id": 10,
       "name": "Async actions not created",
-      "isClosed": false,
+      "isClosed": true,
       "createdAt": "2017-08-22T09:18:34.082Z"
     },
     {
