@@ -60,6 +60,8 @@
 				return 0;
 			}
 		}
+
+		//Reducers
 		function bugsReducer(currentState = [], action){
 			if (action.type === 'ADD_NEW'){
 				let newBug = {
@@ -85,6 +87,13 @@
 			return currentState;
 		}
 
+		function spinnerReducer(currentState = 0, action){
+			if (action.type === 'UP')
+				return ++currentState;
+			if (action.type === 'DOWN')
+				return --currentState;
+			return currentState	
+		}
 
 		/*
 		class BugTracker extends React.Component{
@@ -191,7 +200,21 @@
 			}
 		}
 
-		window.store = Redux.createStore(bugsReducer);
+		let Spinner = ({ value, up, down }) => (
+			<div>
+				<input type="button" value="Decrement" onClick={() => down()}/>
+				<div>{value}</div>
+				<input type="button" value="Increment" onClick={() => up()}/>
+			</div>
+		);
+
+		let rootReducer = Redux.combineReducers({
+			bugs : bugsReducer,
+			counter : spinnerReducer
+		});
+
+		window.store = Redux.createStore(rootReducer);
+
 		let bugActionCreators = {
 			addNew(bugName){
 				return {
@@ -219,10 +242,27 @@
 		};
 
 		let bugActions = Redux.bindActionCreators(bugActionCreators, store.dispatch);
+
+		var spinnerActionCreators = {
+			up : function(){
+				return { type : 'UP'};
+			},
+			down : function(){
+				return { type : 'DOWN'};
+			}
+		}
+
+		var spinnerActions = Redux.bindActionCreators(spinnerActionCreators, store.dispatch);
+
 		console.log(bugActions);
 		function renderApp(){
-			let bugs = store.getState();
-			ReactDOM.render(<BugTracker model={bugs} {...bugActions} ></BugTracker>, 
+			let { bugs, counter } = store.getState();
+			ReactDOM.render(
+				<div>
+					<Spinner {...spinnerActions} value={counter}></Spinner>				
+					<hr />
+					<BugTracker model={bugs} {...bugActions} ></BugTracker>
+				</div>, 
 				document.getElementById('content'));
 		}
 		renderApp();
