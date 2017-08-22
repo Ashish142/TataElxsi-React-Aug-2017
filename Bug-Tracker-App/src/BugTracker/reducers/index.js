@@ -8,21 +8,18 @@ function getComparerFor(attrName){
 
 //Reducers
 function bugsReducer(currentState = [], action){
+	if (action.type === 'LOADED'){
+		return action.payload;
+	}
 	if (action.type === 'ADD_NEW'){
-		let newBug = {
-			name : action.payload,
-			isClosed : false,
-			createdAt : new Date()
-		};
-		return [...currentState, newBug];
+		return [...currentState, action.payload];
 	}
 	if (action.type === 'TOGGLE'){
-		let bugToToggle = action.payload,
-			toggledBug = { ...bugToToggle, isClosed : !bugToToggle.isClosed};
-		return currentState.map(bug => bug === bugToToggle ? toggledBug : bug);
+		let toggledBug = action.payload;
+		return currentState.map(bug => bug.id === toggledBug.id ? toggledBug : bug);
 	}
-	if (action.type === 'REMOVE_CLOSED'){
-		return currentState.filter(bug => !bug.isClosed);
+	if (action.type === 'REMOVE'){
+		return currentState.filter(bug => bug.id !== action.payload.id);
 	}
 	if (action.type === 'SORT'){
 		let comparer = getComparerFor(action.payload);
